@@ -1,0 +1,76 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userService
+                fallbackUri: forward:/fallback/user-service
+                statusCodes: INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE
+            - name: Retry
+              args:
+                retries: 3
+                statuses: INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE
+                methods: GET,POST
+                backoff:
+                  firstBackoff: 10ms
+                  maxBackoff: 100ms
+                  factor: 2
+                  basedOnPreviousValue: false
+
+        - id: hotel-service
+          uri: lb://HOTEL-SERVICE
+          predicates:
+            - Path=/api/hotels/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hotelService
+                fallbackUri: forward:/fallback/hotel-service
+                statusCodes: INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE
+
+        - id: rating-service
+          uri: lb://RATING-SERVICE
+          predicates:
+            - Path=/api/ratings/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: ratingService
+                fallbackUri: forward:/fallback/rating-service
+                statusCodes: INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE
+
+# Eureka Discovery Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
+
+# Actuator Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
