@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for Rating-Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="Rating-Service" />
+        <module name="ApiGateway" />
+        <module name="Hotel-Service" />
+        <module name="User-Service" />
+      </profile>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="apigateway (1) (com.sangam)" />
+        <module name="Service-Registry" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ApiGateway" options="-parameters" />
+      <module name="Hotel-Service" options="-parameters" />
+      <module name="Rating-Service" options="-parameters" />
+      <module name="Service-Registry" options="-parameters" />
+      <module name="User-Service" options="-parameters" />
+      <module name="api-gateway" options="-parameters" />
+      <module name="api-gateway.main" options="-parameters" />
+      <module name="api-gateway.test" options="-parameters" />
+      <module name="apigateway" options="-parameters" />
+      <module name="apigateway (1) (com.sangam)" options="-parameters" />
+      <module name="apigateway.main" options="-parameters" />
+      <module name="apigateway.test" options="-parameters" />
+    </option>
+  </component>
+</project>
